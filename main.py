@@ -4,7 +4,6 @@ import telebot
 import time
 
 bot = telebot.TeleBot(config.token)  # запрашиваем конфиг для получения номера токена
-
 a = 1
 i = 0
 j = 0
