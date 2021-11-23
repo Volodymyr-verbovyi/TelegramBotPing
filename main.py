@@ -1,31 +1,32 @@
-from ping3 import ping
+import urllib
 import config
 import telebot
 import time
 
 bot = telebot.TeleBot(config.token)  # запрашиваем конфиг для получения номера токена
-a = 1
-i = 0
-j = 0
-k = 0
-b = 0
 
-while b == 1:
-    time.sleep(10)  # пауза на 240 секунд, можно сменить на своё значение
 
-if (ping('176.36.155.144') is None):  # тут заместо '192.168.0.0' вводим ip адрес нужного на сервера
-    i = 1
-else:
-    print(i, j)
-    if (i == 1 and j == 1):
-        i = 0
-        j = 0
-        print('онлайн')  # Это вывод в консоль что сервер онлайн
-        bot.send_message(393645188,
-                         'Сервер Онлайн')  # бот отравляет сообщения в телегу юзеру по id 333333333, Текст так-же можно менять
-if (i == 1 and j != 1):
-    print('Сервер Офлайн')  # Это вывод в консоль что сервер офлайн
-    bot.send_message(393645188,
-                     'Сервер Офлайн')  # бот отравляет сообщения в телегу юзеру по id 333333333, Текст так-же можно менять.
-    if i == 1:
-        j = 1
+def uptime_bot(urlSite):
+    while True:
+        try:
+            conn = urllib.request.urlopen(urlSite)
+        except urllib.error.HTTPError as e:
+            # Отправка admin / log
+            print(f'HTTPError: {e.code} для {urlSite}')
+            bot.send_message(393645188,
+                             'Сервер ОФнлайн')
+        except urllib.error.URLError as e:
+            # Отправка admin / log
+            print(f'URLError: {e.code} для {urlSite}')
+            bot.send_message(393645188, 'Сервер ')
+        else:
+            # Сайт поднят
+            print(f'{urlSite} поднят')
+            bot.send_message(393645188,
+                             'Сервер Онлайн')
+        time.sleep(15)
+
+
+if __name__ == '__main__':
+    url = 'http://www.google.com/py'
+    uptime_bot(url)
