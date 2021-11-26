@@ -1,4 +1,6 @@
 import time
+
+import ping3
 import telebot
 from ping3 import ping
 
@@ -7,7 +9,7 @@ import config
 bot = telebot.TeleBot(config.token)  # запрашиваем конфиг для получения номера токена
 
 
-def uptime_bot(urlSite):
+def uptime_bot():
     while True:
         try:
             if ping('192.168.88.120') is None:
@@ -20,15 +22,15 @@ def uptime_bot(urlSite):
                 # bot.send_message(393645188,
                 #                  'Пингуеться и все ок')
 
-        except:
+        except ping3.errors.PingError:
             print(f'{urlSite} Ошибка совсем')
             bot.send_message(393645188,
                              'Вообще Исключение')
 
-        time.sleep(15)
+        time.sleep(5)
 
 
 if __name__ == '__main__':
     # url = 'http://www.google.com/py'
     urlSite = '192.168.88.120'
-    uptime_bot(urlSite)
+    uptime_bot()
